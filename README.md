@@ -19,13 +19,15 @@ The following packages are required for running GenART. Compatibility is guarant
 
 ### Datasets
 
-We provide NT benchmark datasets, GUE benchmark datasets and pre-trained models. You can access them via the following Google Drive links:
+We provide NT benchmark datasets, GUE benchmark datasets and checkpoints for pretrained models. You can access them via the following Google Drive links:
 
 [NT benchmark](https://drive.google.com/file/d/1jDTF8H8L7i_b8E9SAhgnAVX8QpaPZ3HH/view?usp=drive_link)
 
 [GUE benchamrk](https://drive.google.com/file/d/1jDTF8H8L7i_b8E9SAhgnAVX8QpaPZ3HH/view?usp=drive_link)
 
-[Pre-trained models](https://drive.google.com/file/d/1jDTF8H8L7i_b8E9SAhgnAVX8QpaPZ3HH/view?usp=drive_link)
+[Pre-trained GenART-350M](https://drive.google.com/file/d/1jDTF8H8L7i_b8E9SAhgnAVX8QpaPZ3HH/view?usp=drive_link)
+
+[Pre-trained GenART-1B](https://drive.google.com/file/d/1jDTF8H8L7i_b8E9SAhgnAVX8QpaPZ3HH/view?usp=drive_link)
 
 
 ## Usage
