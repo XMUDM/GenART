@@ -378,21 +378,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 finetune.py \
-#     --train_data /path/to/train_data.csv \
-#     --eval_data /path/to/test_data.csv \
-#     --output_dir /path/to/output_dir \
-#     --pretrained_model ./pretrained_model/GenART-350M \
-#     --batch_size 8 \
-#     --max_steps 0 \
-#     --epochs 20
-
-# CUDA_VISIBLE_DEVICES=0 python finetune.py \
-#     --train_data /path/to/train_data.csv \
-#     --eval_data /path/to/test_data.csv \
-#     --output_dir /path/to/output_dir \
-#     --pretrained_model ./pretrained_model/GenART-350M \
-#     --batch_size 32 \
-#     --max_steps 0 \
-#     --epochs 20
