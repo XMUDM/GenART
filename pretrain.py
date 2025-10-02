@@ -51,10 +51,10 @@ def get_args():
     parser.add_argument("--gradient_accumulation_steps", type=int, default=1, 
                        help="Number of gradient accumulation steps to increase effective batch size")
     parser.add_argument("--epochs", type=int, default=0, help="Total training epochs")
-    parser.add_argument("--max_steps", type=int, default=300000, help="Total training steps, if 0 use epochs parameter")
+    parser.add_argument("--max_steps", type=int, default=10000, help="Total training steps, if 0 use epochs parameter")
     parser.add_argument("--lr", type=float, default=1e-4, help="Initial learning rate")
     parser.add_argument("--max_len", type=int, default=1024, help="Maximum sequence length")
-    parser.add_argument("--save_steps", type=int, default=300000, help="Model save interval steps")
+    parser.add_argument("--save_steps", type=int, default=10000, help="Model save interval steps")
     parser.add_argument("--logging_steps", type=int, default=500, help="Logging interval steps")
     parser.add_argument("--init_from_checkpoint", type=str, help="Checkpoint path to initialize model")
     parser.add_argument("--global_start_step", type=int, default=0, help="Global training start step")
@@ -468,20 +468,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-# CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 pretrain.py \
-#     --train_data /path/to/train_data.csv \
-#     --eval_data /path/to/test_data.csv \
-#     --output_dir /path/to/output_dir \
-#     --batch_size 8 \
-#     --max_steps 10000 \
-#     --save_steps 10000
-
-# CUDA_VISIBLE_DEVICES=0 python pretrain.py \
-#     --train_data /path/to/train_data.csv \
-#     --eval_data /path/to/test_data.csv \
-#     --output_dir /path/to/output_dir \
-#     --batch_size 8 \
-#     --max_steps 10000 \
-#     --save_steps 10000
