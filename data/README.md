@@ -1,8 +1,9 @@
 We provide NT benchmark datasets and GUE benchmark datasets. You can access them via the following Google Drive links:
 
-[NT benchmark](https://drive.google.com/file/d/1jDTF8H8L7i_b8E9SAhgnAVX8QpaPZ3HH/view?usp=drive_link)
+[NT benchmark](https://drive.google.com/file/d/157BG11p2WhkqTeuI_M64GCw4zk0llOtf/view?usp=drive_link)
 
-[GUE benchamrk](https://drive.google.com/file/d/1jDTF8H8L7i_b8E9SAhgnAVX8QpaPZ3HH/view?usp=drive_link)
+[GUE benchamrk](https://drive.google.com/file/d/12vnW_3Ksyzow6G3CgCuVAp_MwcRKMJsZ/view?usp=drive_link)
+
 
 The directory structure of `NT_benchmark` is as follows:
 ```
