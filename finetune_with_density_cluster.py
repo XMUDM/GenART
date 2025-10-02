@@ -55,7 +55,7 @@ def get_args():
     parser.add_argument("--save_steps", type=int, default=0, help="Model save steps; if 0, do not save checkpoints")
     parser.add_argument("--logging_steps", type=int, default=200, help="Logging steps")
     parser.add_argument("--local_rank", type=int, default=-1, help="Local rank for distributed training")
-    parser.add_argument("--density_factor", type=float, default=0.5, help="Token density for the specific task.")
+    parser.add_argument("--token_density", type=float, default=0.5, help="Token density for the specific task.")
     parser.add_argument("--cluster_factor", type=float, default=0.5, help="Token cluster factor for the specific task.")
     return parser.parse_args()
 
@@ -112,7 +112,7 @@ def evaluate(
     tokenizer: PreTrainedTokenizer, 
     eval_loader: DataLoader, 
     device: torch.device,
-    density_factor: float,
+    token_density: float,
     cluster_factor: float,
     args: argparse.Namespace):
     """Model evaluation process"""
@@ -134,7 +134,7 @@ def evaluate(
                     attention_mask=batch["attention_mask"].to(device),
                     special_tokens_mask=batch["special_tokens_mask"].to(device),
                     labels=batch['labels'].to(device),
-                    density_factor=density_factor,
+                    token_density=token_density,
                     cluster_factor=cluster_factor,
                 )
             total_loss += outputs.cls_loss.item()
@@ -170,7 +170,7 @@ def train_one_step(
     tokenizer: PreTrainedTokenizer,
     device: torch.device,
     scaler: torch.cuda.amp.GradScaler,
-    density_factor: float,
+    token_density: float,
     cluster_factor: float,
     args: argparse.Namespace,
     optimizer,
@@ -191,7 +191,7 @@ def train_one_step(
             attention_mask=attention_mask,
             special_tokens_mask=special_tokens_mask,
             labels=labels,
-            density_factor=density_factor,
+            token_density=token_density,
             cluster_factor=cluster_factor,
         )
     
@@ -227,7 +227,7 @@ def train(args: argparse.Namespace,
         device: torch.device, 
         is_distributed: bool, 
         is_main_process: bool, 
-        density_factor: float,
+        token_density: float,
         cluster_factor: float):
 
     tokenizer = AutoTokenizer.from_pretrained(args.pretrained_model)
@@ -264,7 +264,7 @@ def train(args: argparse.Namespace,
         args.max_steps = t_total
         
     if is_main_process:
-        logger.info(f"Density {density_factor:.4f}, Cluster {cluster_factor:.4f}")
+        logger.info(f"Density {token_density:.4f}, Cluster {cluster_factor:.4f}")
         logger.info(f"Total training steps: {t_total}, total epochs: {args.epochs}")
         logger.info(f"Real batch size: {args.batch_size}, gradient accumulation steps: {args.gradient_accumulation_steps}, effective batch size: {total_train_batch_size}")
 
@@ -296,7 +296,7 @@ def train(args: argparse.Namespace,
         if is_main_process:
             progress_bar = tqdm(
                 train_loader,
-                desc=f"Density {density_factor:.2f}, Cluster {cluster_factor:.2f} - Epoch {epoch + 1}/{args.epochs}",
+                desc=f"Density {token_density:.2f}, Cluster {cluster_factor:.2f} - Epoch {epoch + 1}/{args.epochs}",
                 leave=True,
                 position=0,
                 dynamic_ncols=True,
@@ -309,7 +309,7 @@ def train(args: argparse.Namespace,
             update_weights = (step + 1) % args.gradient_accumulation_steps == 0 or step == len(train_loader) - 1
             
             loss = train_one_step(model, batch, tokenizer, device, scaler, 
-                                density_factor, cluster_factor, args, optimizer, update_weights)
+                                token_density, cluster_factor, args, optimizer, update_weights)
             
             if update_weights:
                 global_step += 1
@@ -326,8 +326,7 @@ def train(args: argparse.Namespace,
                     logger.info(f"Step {global_step} | Train Loss: {loss:.4f}")
                     
                     if eval_loader:
-                        eval_loss, eval_acc, eval_mcc, eval_f1 = evaluate(model, tokenizer, eval_loader, device,  density_factor, cluster_factor, args)
-                        lo
+                        eval_loss, eval_acc, eval_mcc, eval_f1 = evaluate(model, tokenizer, eval_loader, device,  token_density, cluster_factor, args)
                         logger.info(f"Step {global_step} | Val Loss: {eval_loss:.4f} | ACC: {eval_acc:.4f} | MCC: {eval_mcc:.4f} | F1: {eval_f1:.4f}")
                         
                 if is_main_process and args.save_steps > 0 and global_step % args.save_steps == 0:
@@ -389,35 +388,13 @@ def main():
         if is_distributed:
             logger.info(f"Distributed training with {dist.get_world_size()} processes")
 
-    density_factor = args.density_factor
+    token_density = args.token_density
     cluster_factor = args.cluster_factor
 
-    checkpoints_dict = train(args, device, is_distributed, is_main_process, density_factor, cluster_factor)
+    checkpoints_dict = train(args, device, is_distributed, is_main_process, token_density, cluster_factor)
 
     if is_distributed:
         dist.destroy_process_group()
 
 if __name__ == "__main__":
     main()
-
-# CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 finetune.py \
-#     --train_data /path/to/train_data.csv \
-#     --eval_data /path/to/test_data.csv \
-#     --output_dir /path/to/output_dir \
-#     --pretrained_model ./pretrained_model/GenART-350M \
-#     --batch_size 8 \
-#     --max_steps 0 \
-#     --epochs 20 \
-#     --density_factor 0.7 \
-#     --cluster_factor 0.7
-
-# CUDA_VISIBLE_DEVICES=0 python finetune.py \
-#     --train_data /path/to/train_data.csv \
-#     --eval_data /path/to/test_data.csv \
-#     --output_dir /path/to/output_dir \
-#     --pretrained_model ./pretrained_model/GenART-350M \
-#     --batch_size 32 \
-#     --max_steps 0 \
-#     --epochs 20 \
-#     --density_factor 0.7 \
-#     --cluster_factor 0.7
