@@ -8,7 +8,7 @@ GenART is a genomic foundation model pre-trained on 53 billion nucleotides from 
 
 **Schematic illustration of the GenART framework.** **(a)** The overall model architecture and pre-training-fine-tuning framework of the GenART model. **(b)** A detailed schematic of the Adaptive Tokenization module. **(c)** Downstream applications and performance evaluation of genomic foundation models.
 
-### Setup
+## Setup
 
 The following packages are required for running GenART. Compatibility is guaranteed with the specified versions:
 - **numpy**: `1.24.4`
@@ -17,7 +17,7 @@ The following packages are required for running GenART. Compatibility is guarant
 - **transformers**: `4.39.3`
 - **flash-attn**: `2.3.6`
 
-### Datasets
+## Datasets
 
 We provide NT benchmark datasets, GUE benchmark datasets and checkpoints for pretrained models. You can access them via the following Google Drive links:
 
