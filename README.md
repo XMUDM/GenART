@@ -36,7 +36,7 @@ We provide code for pre-training and fine-tuning, which can be found in `pretrai
 The execution commands are as follows:
 
 ```shell
-# 1. Multi-GPU Pretraining
+# 1. Multi-GPU Pre-training
 CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 pretrain.py \
     --train_data /path/to/train_data.csv \
     --eval_data /path/to/test_data.csv \
@@ -45,7 +45,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node
     --max_steps 10000 \
     --save_steps 10000
 
-# 2. Single-GPU Pretraining
+# 2. Single-GPU Pre-training
 CUDA_VISIBLE_DEVICES=0 python pretrain.py \
     --train_data /path/to/train_data.csv \
     --eval_data /path/to/test_data.csv \
@@ -54,7 +54,7 @@ CUDA_VISIBLE_DEVICES=0 python pretrain.py \
     --max_steps 10000 \
     --save_steps 10000  
 
-# 3. Multi-GPU Finetuning  
+# 3. Multi-GPU Fine-tuning  
 CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 finetune.py \
     --train_data /path/to/train_data.csv \
     --eval_data /path/to/test_data.csv \
@@ -64,7 +64,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node
     --max_steps 0 \
     --epochs 20
 
-# 4. Single-GPU Finetuning  
+# 4. Single-GPU Fine-tuning  
 CUDA_VISIBLE_DEVICES=0 python finetune.py \
     --train_data /path/to/train_data.csv \
     --eval_data /path/to/test_data.csv \
@@ -74,7 +74,7 @@ CUDA_VISIBLE_DEVICES=0 python finetune.py \
     --max_steps 0 \
     --epochs 20
 
-# 5. Multi-GPU Finetuning with *token_density* and *cluster_factor*
+# 5. Multi-GPU Fine-tuning with *token_density* and *cluster_factor*
 CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 finetune.py \
     --train_data /path/to/train_data.csv \
     --eval_data /path/to/test_data.csv \
@@ -86,7 +86,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node
     --token_density 0.7 \
     --cluster_factor 0.7
 
-# 6. Single-GPU Finetuning with *token_density* and *cluster_factor*
+# 6. Single-GPU Fine-tuning with *token_density* and *cluster_factor*
 CUDA_VISIBLE_DEVICES=0 python finetune.py \
     --train_data /path/to/train_data.csv \
     --eval_data /path/to/test_data.csv \
