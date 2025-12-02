@@ -29,7 +29,7 @@ We provide NT benchmark datasets, GUE benchmark datasets and checkpoints for pre
 
 [Pre-trained GenART-1B](https://drive.google.com/file/d/1yKlnw6fRFgKCLhijEIKlMVe0ofl_WfU7/view?usp=drive_link)
 
-
+[Supplementary Data](https://drive.google.com/drive/folders/17LJCYD1wnUc_H-G126WVp8wVxss5t_22)
 ## Usage
 
 We provide code for pre-training and fine-tuning, which can be found in `pretrain.py`, `finetune.py`, and `finetune_with_density_cluster.py`. `pretrain.py` is used for pre-training, `finetune.py` is used for fine-tuning, and `finetune_with_cluster_density.py` is used for refinement based on the adjustable hyperparameters *token density* and *cluster factor*.  
