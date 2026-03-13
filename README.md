@@ -43,7 +43,8 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node
     --output_dir /path/to/output_dir \
     --batch_size 8 \
     --max_steps 10000 \
-    --save_steps 10000
+    --save_steps 10000 \
+    --fp16
 
 # 2. Single-GPU Pre-training
 CUDA_VISIBLE_DEVICES=0 python pretrain.py \
@@ -52,7 +53,8 @@ CUDA_VISIBLE_DEVICES=0 python pretrain.py \
     --output_dir /path/to/output_dir \
     --batch_size 8 \
     --max_steps 10000 \
-    --save_steps 10000  
+    --save_steps 10000 \
+    --fp16
 
 # 3. Multi-GPU Fine-tuning  
 CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 finetune.py \
@@ -62,7 +64,8 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node
     --pretrained_model /path/to/pretrained_model \
     --batch_size 8 \
     --max_steps 0 \
-    --epochs 20
+    --epochs 20 \
+    --fp16
 
 # 4. Single-GPU Fine-tuning  
 CUDA_VISIBLE_DEVICES=0 python finetune.py \
@@ -72,7 +75,8 @@ CUDA_VISIBLE_DEVICES=0 python finetune.py \
     --pretrained_model /path/to/pretrained_model \
     --batch_size 32 \
     --max_steps 0 \
-    --epochs 20
+    --epochs 20 \
+    --fp16
 
 # 5. Multi-GPU Fine-tuning with *token_density* and *cluster_factor*
 CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 finetune.py \
@@ -84,7 +88,8 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node
     --max_steps 0 \
     --epochs 20 \
     --token_density 0.7 \
-    --cluster_factor 0.7
+    --cluster_factor 0.7 \
+    --fp16
 
 # 6. Single-GPU Fine-tuning with *token_density* and *cluster_factor*
 CUDA_VISIBLE_DEVICES=0 python finetune.py \
@@ -96,5 +101,6 @@ CUDA_VISIBLE_DEVICES=0 python finetune.py \
     --max_steps 0 \
     --epochs 20 \
     --token_density 0.7 \
-    --cluster_factor 0.7
+    --cluster_factor 0.7 \
+    --fp16
 ```
